@@ -3,14 +3,8 @@ var inquirer = require("inquirer");
 
 var connection = mysql.createConnection({
     host: "localhost",
-
-    // Your port; if not 3306
     port: 3306,
-
-    // Your username
     user: "root",
-
-    // Your password
     password: "1234",
     database: "bamazon_DB"
 });
@@ -26,35 +20,34 @@ connection.connect(function (err) {
             console.log(res[i].item_id + " | ", res[i].product_name + " | ", "$" + res[i].price + "\n ----------------------------");
         }
     });
-    purchase();
+    setTimeout(purchase, 500);
 });
 
 function purchase() {
-    inquirer
-        .prompt([
-            {
-                name: "purchase",
-                type: "input",
-                message: "Please enter the unit number of the product you would like to buy.",
-                validate: function (value) {
-                    if (isNaN(value) === false) {
-                        return true;
-                    }
-                    return false;
+    inquirer.prompt([
+        {
+            name: "purchase",
+            type: "input",
+            message: "Please enter the Item # of the product you would like to buy.",
+            validate: function (value) {
+                if (isNaN(value) === false) {
+                    return true;
                 }
-            },
-            {
-                name: "quantity",
-                type: "input",
-                message: "How many would you like?",
-                validate: function (value) {
-                    if (isNaN(value) === false) {
-                        return true;
-                    }
-                    return false;
-                }
+                return false;
             }
-        ])
+        },
+        {
+            name: "quantity",
+            type: "input",
+            message: "How many would you like?",
+            validate: function (value) {
+                if (isNaN(value) === false) {
+                    return true;
+                }
+                return false;
+            }
+        }
+    ])
         .then(function (answer) {
             var query = "SELECT item_id, product_name, price, stock_quantity FROM products";
             connection.query(query, function (err, res) {
@@ -63,21 +56,24 @@ function purchase() {
                 var quantity = parseInt(answer.quantity);
                 for (var i = 0; i < res.length; i++) {
                     if (res[i].item_id === purchase) {
-                        if (quantity < res[i].stock_quantity) {
+                        if (quantity <= res[i].stock_quantity) {
                             console.log("You have purchased " + quantity + " " + res[i].product_name + ". Your total is $" + (res[i].price * quantity) + ". Thank you!")
                             var query = connection.query(
                                 "UPDATE products SET ? WHERE ?",
                                 [
-                                  {
-                                    stock_quantity: res[i].stock_quantity - quantity
-                                  },
-                                  {
-                                    product_name: res[i].product_name
-                                  }
+                                    {
+                                        stock_quantity: res[i].stock_quantity - quantity
+                                    },
+                                    {
+                                        product_name: res[i].product_name
+                                    }
                                 ],
-                            )}
+                            )
+                            connection.end();
+                        }
                         else {
-                            console.log("I'm sorry. There are only " + res[i].stock_quantity + " available. Please try your purchase again.");
+                            console.log("I'm sorry. There are only " + res[i].stock_quantity + " " + res[i].product_name + " available. Please try your purchase again.");
+                            connection.end();
                         }
                     }
                 }

@@ -12,15 +12,15 @@ CREATE TABLE products(
   PRIMARY KEY (item_id)
 );
 
-INSERT INTO prorducts (product_name, department_name, price, stock_quantity)
+INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Sweater", "Clothing", 60, 10),
 ("Honeycrisp apple", "Produce", 2, 45),
-("Men's slacks", "Clothing", 45, 8),
+("Men's slacks", "Clothing", 45, 4),
 ("Brussel sprouts", "Produce", 4, 6),
 ("Garden rake", "Hardware", 18, 6),
 ("Pictionary", "Game", 25, 8),
 ("Laptop computer", "Electronics", 419, 3),
 ("Socks", "Clothing", 12, 13),
 ("Spoons", "Houseware", 30, 5),
-("Shovel", "Hardware", 18, 6);
+("Shovel", "Hardware", 18, 1);
 SELECT * FROM products;
