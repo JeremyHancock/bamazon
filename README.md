@@ -2,4 +2,8 @@ Bamazon is a command line interface app that is an Amazon-like storefront. The c
 
 The manager can list all products, list products, with low inventory, add inventory, and even add an entirely new product to the store.
 
-Used: JavaScript, mySql, Node.js, 
+Used: JavaScript, mySql, Node.js
+
+A brief video demo can be viewed here:
+
+https://drive.google.com/file/d/1GLT3lRyNJmJeBwZAPj7yauYWuobleoAO/view
